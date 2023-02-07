@@ -17,7 +17,7 @@ def fib(n):
     else:
         k = n // 2
 
-    # Applying above formula [Note value n&1 is 1
+    # Applying above formula: value n&1 is 1
     # if n is odd, else 0.
     if n & 1:
         f[n] = (fib(k) * fib(k) + fib(k - 1) * fib(k - 1))
