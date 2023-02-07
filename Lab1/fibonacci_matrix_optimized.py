@@ -1,4 +1,3 @@
-
 def fibonacci_matrix_op(n):
     if n == 0:
         return 0
@@ -8,8 +7,9 @@ def fibonacci_matrix_op(n):
         return A[0][0]
 
 
-def power(A, n):
+# Optimized power method
 
+def power(A, n):
     if n == 0 or n == 1:
         return
 
