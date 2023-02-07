@@ -31,6 +31,7 @@ plt.plot(test_case1, time_results[0], label='Recursive', color='blue')
 plt.xlabel('Nth Fibonacci Term')
 plt.ylabel('Elapsed time')
 plt.title('Recursive fibonacci')
+plt.legend()
 
 # Fibonacci Binet graph
 
