@@ -11,3 +11,4 @@ def alg_3(n):
                 j = j + 1
         i = i + 1
     return c
+

@@ -13,3 +13,5 @@ def alg_5(n):
             j = j + 1
         i = i + 1
     return c
+
+

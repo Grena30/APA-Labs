@@ -16,7 +16,7 @@ if __name__ == '__main__':
     step = int(n/10)
     digit_num = 4
     image_num = 1
-    arr = [i for i in range(step, n, step)]
+    arr = [i for i in range(step, n+step, step)]
     time_results = list()
 
     # Alg 1
@@ -133,6 +133,14 @@ if __name__ == '__main__':
     myTable.add_row(["Alg 4", *time_results[3]])
     myTable.add_row(["Alg 5", *time_results[4]])
     print(myTable)
+
+    # Separate time results
+
+    print(myTable[0])
+    print(myTable[1])
+    print(myTable[2])
+    print(myTable[3])
+    print(myTable[4])
 
     # All the graphs
 
