@@ -15,18 +15,26 @@ if __name__ == "__main__":
     depth = 15
     image_num = 0
     arr = [random.randint(1, 150) for i in range(depth)]
-    times = list()
-    print("Tree number node: ", arr)
 
+    times = list()
+
+    print("Tree number node: ", arr)
     rand = [random.randint(0, len(arr)) for i in range(node)]
     print("Chosen nodes: ", rand)
+
+    temp_arr = list()
+    specific_list = list()
+    for i in arr:
+        temp_arr.append(i)
+
+    for i in rand:
+        specific_list.append(arr[i])
 
     tree1 = generate_balanced_tree(arr)
     print("Balanced tree: ", end='')
     pre_order_traversal(tree1)
     print("")
-
-    tree2 = generate_unbalanced_tree(depth, arr)
+    tree2 = generate_unbalanced_tree(depth, temp_arr)
     print("Unbalanced tree: ", end='')
     pre_order_traversal(tree2)
     print("")
@@ -37,7 +45,7 @@ if __name__ == "__main__":
 
     for i in range(len(rand)):
         start_time = time.perf_counter()
-        bfs = (tree1, rand[i])
+        bfs = (tree1, arr[rand[i]])
         end_time = time.perf_counter()
         time_taken = end_time - start_time
         current_times.append(round(time_taken, digit_num))
@@ -49,7 +57,7 @@ if __name__ == "__main__":
 
     for i in range(len(rand)):
         start_time = time.perf_counter()
-        bfs = (tree2, rand[i])
+        bfs = (tree2, arr[rand[i]])
         end_time = time.perf_counter()
         time_taken = end_time - start_time
         current_times.append(round(time_taken, digit_num))
@@ -61,7 +69,7 @@ if __name__ == "__main__":
 
     for i in range(len(rand)):
         start_time = time.perf_counter()
-        dfs = (tree1, rand[i])
+        dfs = (tree1, arr[rand[i]])
         end_time = time.perf_counter()
         time_taken = end_time - start_time
         current_times.append(round(time_taken, digit_num))
@@ -73,13 +81,13 @@ if __name__ == "__main__":
 
     for i in range(len(rand)):
         start_time = time.perf_counter()
-        dfs = (tree2, rand[i])
+        dfs = (tree2, arr[rand[i]])
         end_time = time.perf_counter()
         time_taken = end_time - start_time
         current_times.append(round(time_taken, digit_num))
     times.append(current_times)
 
-    myTable = PrettyTable(['Node elements', *rand])
+    myTable = PrettyTable(['Node elements', *specific_list])
     myTable.add_row(["BFS Balanced", *times[0]])
     myTable.add_row(["BFS Unbalanced", *times[1]])
     myTable.add_row(["DFS Balanced", *times[2]])
@@ -99,7 +107,7 @@ if __name__ == "__main__":
                 count = 0
                 for z in range(j):
                     count = count + times[i][z]
-                times_avg[i][j] = count / j
+                times_avg[i][j] = count / (j + 1)
 
     myTable = PrettyTable(['Nr of nodes', *[i for i in range(1, 6)]])
     myTable.add_row(["BFS Balanced", *times_avg[0]])
