@@ -1,9 +1,13 @@
+import graphviz
+import random
+
+
 class Node:
 
-    def __init__(self, data):
-        self.data = data
-        self.left = None
-        self.right = None
+    def __init__(self, value, left=None, right=None):
+        self.data = value
+        self.left = left
+        self.right = right
 
 
 def pre_order_traversal(root):
@@ -13,112 +17,81 @@ def pre_order_traversal(root):
         pre_order_traversal(root.right)
 
 
-def pre_order_search(root, value):
+def in_order_traversal(root):
     if root is not None:
-        if root.data != value:
-            pre_order_search(root.left, value)
-            pre_order_search(root.right, value)
-        else:
-            print(value)
+        pre_order_traversal(root.left)
+        print(root.data, end=" ")
+        pre_order_traversal(root.right)
 
 
-def isBalanced(root):
-    # Base condition
-    if root is None:
-        return True
-
-    # Compute height of left subtree
-    lh = isBalanced(root.left)
-
-    # If left subtree is not balanced,
-    # return 0
-    if lh == 0:
-        return 0
-
-    # Do same thing for the right subtree
-    rh = isBalanced(root.right)
-    if rh == 0:
-        return 0
-
-    # Allowed values for (lh - rh) are 1, -1, 0
-    if abs(lh - rh) > 1:
-        return 0
-
-    # If we reach here means tree is
-    # height-balanced tree, return height
-    # in this case
-    else:
-        return max(lh, rh) + 1
+def generate_unbalanced_tree(depth, values):
+    if depth == 0 or not values:
+        return None
+    value = values.pop(0)
+    left_depth = random.randint(0, depth - 1)
+    right_depth = depth - 1 - left_depth
+    return Node(value, generate_unbalanced_tree(left_depth, values), generate_unbalanced_tree(right_depth, values))
 
 
-def storeBSTNodes(root, nodes):
-    # Base case
-    if not root:
-        return
-
-    # Store nodes in Inorder (which is sorted
-    # order for BST)
-    storeBSTNodes(root.left, nodes)
-    nodes.append(root)
-    storeBSTNodes(root.right, nodes)
-
-
-# Recursive function to construct binary tree
-def buildTreeUtil(nodes, start, end):
-    # base case
-    if start > end:
+def generate_balanced_tree(nums):
+    if not nums:
         return None
 
-    # Get the middle element and make it root
-    mid = (start + end) // 2
-    node = nodes[mid]
+    mid = len(nums) // 2
+    root = Node(nums[mid])
+    root.left = generate_balanced_tree(nums[:mid])
+    root.right = generate_balanced_tree(nums[mid + 1:])
 
-    # Using index in Inorder traversal, construct
-    # left and right subtrees
-    node.left = buildTreeUtil(nodes, start, mid - 1)
-    node.right = buildTreeUtil(nodes, mid + 1, end)
-    return node
+    return root
 
 
-# This functions converts an unbalanced BST to
-# a balanced BST
-def buildTree(root):
-    # Store nodes of given BST in sorted order
-    nodes = []
-    storeBSTNodes(root, nodes)
-
-    # Constructs BST from nodes[]
-    n = len(nodes)
-    return buildTreeUtil(nodes, 0, n - 1)
-
-
-def printLevelOrder(root):
-    h = height(root)
-    for i in range(1, h + 1):
-        printCurrentLevel(root, i)
-
-
-# Print nodes at a current level
-def printCurrentLevel(root, level):
+def bfs(root, value):
     if root is None:
-        return
-    if level == 1:
-        print(root.data, end=" ")
-    elif level > 1:
-        printCurrentLevel(root.left, level - 1)
-        printCurrentLevel(root.right, level - 1)
+        return []
+    queue = [root]
+    visited = []
+    while queue:
+        node = queue.pop(0)
+        visited.append(node.data)
+        if node.data == value:
+            return visited
+        if node.left:
+            queue.append(node.left)
+        if node.right:
+            queue.append(node.right)
+    return None
 
 
-def height(node):
+def dfs(root, value):
+    if root is None:
+        return []
+    stack = [root]
+    visited = []
+    while stack:
+        node = stack.pop()
+        visited.append(node.data)
+        if node.data == value:
+            return visited
+        if node.right:
+            stack.append(node.right)
+        if node.left:
+            stack.append(node.left)
+    return None
+
+
+def graphviz_tree(node):
+    graph = graphviz.Digraph()
+    add_node(graph, node)
+    return graph
+
+
+def add_node(graph, node):
     if node is None:
-        return 0
-    else:
-        # Compute the height of each subtree
-        lh = height(node.left)
-        rh = height(node.right)
-
-        # Use the larger one
-        if lh > rh:
-            return lh + 1
-        else:
-            return rh + 1
+        return
+    graph.node(str(node.data))
+    if node.left:
+        graph.edge(str(node.data), str(node.left.data))
+        add_node(graph, node.left)
+    if node.right:
+        graph.edge(str(node.data), str(node.right.data))
+        add_node(graph, node.right)
