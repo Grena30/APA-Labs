@@ -1,5 +1,5 @@
 from node import generate_balanced_tree, generate_unbalanced_tree, pre_order_traversal, bfs, dfs, in_order_traversal
-from node import graphviz_tree
+from node import graphviz_tree, is_unbalanced
 import time
 from prettytable import PrettyTable
 from matplotlib import pyplot as plt
@@ -116,6 +116,9 @@ if __name__ == "__main__":
 
     graph = graphviz_tree(tree2)
     graph.render('unbalanced_binary_tree.gv', view=True)
+
+    print("Tree1: ", is_unbalanced(tree1))
+    print("Tree2: ", is_unbalanced(tree2))
 
     nums = [i for i in range(1, 6)]
     plt.figure(image_num)

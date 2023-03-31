@@ -95,3 +95,19 @@ def add_node(graph, node):
     if node.right:
         graph.edge(str(node.data), str(node.right.data))
         add_node(graph, node.right)
+
+
+def is_unbalanced(node):
+    if node is None:
+        return False
+    left_height = height(node.left)
+    right_height = height(node.right)
+    if abs(left_height - right_height) > 1:
+        return True
+    return is_unbalanced(node.left) or is_unbalanced(node.right)
+
+
+def height(node):
+    if node is None:
+        return 0
+    return 1 + max(height(node.left), height(node.right))
