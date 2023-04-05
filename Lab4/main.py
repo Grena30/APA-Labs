@@ -1,3 +1,5 @@
+import numpy as np
+
 from node import generate_balanced_tree, generate_unbalanced_tree, pre_order_traversal, bfs, dfs, in_order_traversal
 from node import graphviz_tree, is_unbalanced
 import time
@@ -129,8 +131,9 @@ if __name__ == "__main__":
     print("Tree2: ", is_unbalanced(tree2))
 
     nums = [i for i in range(1, 6)]
+    x = np.arange(1, len(nums)+1)
     plt.figure(image_num)
-    plt.plot(nums, times[0], label='BFS balanced', color='blue')
+    plt.bar(x, times_avg[0], 0.5, label='BFS balanced', color='blue')
     plt.xlabel('N elements checked')
     plt.ylabel('Elapsed time, s')
     plt.title('BFS balanced')
@@ -138,7 +141,7 @@ if __name__ == "__main__":
     image_num += 1
 
     plt.figure(image_num)
-    plt.plot(nums, times[1], label='BFS unbalanced', color='blue')
+    plt.bar(x, times_avg[1], 0.5, label='BFS unbalanced', color='orange')
     plt.xlabel('N elements checked')
     plt.ylabel('Elapsed time, s')
     plt.title('BFS unbalanced')
@@ -146,7 +149,7 @@ if __name__ == "__main__":
     image_num += 1
 
     plt.figure(image_num)
-    plt.plot(nums, times[2], label='DFS balanced', color='blue')
+    plt.bar(x, times_avg[2], 0.5, label='DFS balanced', color='blue')
     plt.xlabel('N elements checked')
     plt.ylabel('Elapsed time, s')
     plt.title('DFS balanced')
@@ -154,7 +157,7 @@ if __name__ == "__main__":
     image_num += 1
 
     plt.figure(image_num)
-    plt.plot(nums, times[3], label='DFS unbalanced', color='blue')
+    plt.bar(x, times_avg[3], 0.5, label='DFS unbalanced', color='orange')
     plt.xlabel('N elements checked')
     plt.ylabel('Elapsed time, s')
     plt.title('DFS unbalanced')
@@ -162,10 +165,28 @@ if __name__ == "__main__":
     image_num += 1
 
     plt.figure(image_num)
-    plt.plot(nums, times[0], label='BFS balanced', color='black')
-    plt.plot(nums, times[1], label='BFS unbalanced', color='cyan')
-    plt.plot(nums, times[2], label='DFS balanced', color='green')
-    plt.plot(nums, times[3], label='DFS unbalanced', color='blue')
+    plt.bar(x-0.2, times_avg[0], 0.5, label='BFS balanced', color='orange')
+    plt.bar(x+0.2, times_avg[2], 0.5, label='DFS balanced', color='green')
+    plt.xlabel('N elements checked')
+    plt.ylabel('Elapsed time, s')
+    plt.title('DFS & BFS balanced')
+    plt.legend()
+    image_num += 1
+
+    plt.figure(image_num)
+    plt.bar(x-0.2, times_avg[1], 0.5, label='BFS unbalanced', color='orange')
+    plt.bar(x+0.2, times_avg[3], 0.5, label='DFS unbalanced', color='green')
+    plt.xlabel('N elements checked')
+    plt.ylabel('Elapsed time, s')
+    plt.title('DFS & BFS unbalanced')
+    plt.legend()
+    image_num += 1
+
+    plt.figure(image_num)
+    plt.bar(x-0.2, times_avg[0], 0.3, label='BFS balanced', color='orange')
+    plt.bar(x-0.1, times_avg[1], 0.3, label='BFS unbalanced', color='cyan')
+    plt.bar(x+0.1, times_avg[2], 0.3, label='DFS balanced', color='green')
+    plt.bar(x+0.2, times_avg[3], 0.3, label='DFS unbalanced', color='blue')
     plt.xlabel('N elements checked')
     plt.ylabel('Elapsed time, s')
     plt.title('Graph search')
