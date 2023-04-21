@@ -18,7 +18,37 @@ def generate_random_graph(num_nodes, num_edges):
     return graph
 
 
-def draw_graph(graph):
+def generate_sparse_graph(num_nodes, edge_density):
+    max_edges = int(num_nodes * (num_nodes-1) / 2)
+    num_edges = int(max_edges * edge_density)
+    graph = {str(i): {} for i in range(num_nodes)}
+    nodes = list(graph.keys())
+
+    while num_edges > 0:
+        u, v = random.sample(nodes, 2)
+        if v not in graph[u]:
+            weight = random.randint(1, 10)
+            graph[u][v] = weight
+            graph[v][u] = weight
+            num_edges -= 1
+
+    return graph
+
+
+def generate_complete_graph(num_nodes):
+    graph = {str(i): {} for i in range(num_nodes)}
+    nodes = list(graph.keys())
+
+    for i in range(num_nodes):
+        for j in range(i + 1, num_nodes):
+            weight = random.randint(1, 10)
+            graph[nodes[i]][nodes[j]] = weight
+            graph[nodes[j]][nodes[i]] = weight
+
+    return graph
+
+
+def draw_graph(graph, string):
     dot = Digraph()
     added_edges = set()
     for node in graph:
@@ -27,7 +57,7 @@ def draw_graph(graph):
             if (node, neighbor) not in added_edges and (neighbor, node) not in added_edges:
                 dot.edge(node, neighbor, label=str(weight), dir='none')
                 added_edges.add((node, neighbor))
-    dot.render('graph', view=True)
+    dot.render(string, view=True)
 
 
 def dijkstra(graph, start, target):
@@ -79,4 +109,5 @@ def floyd(graph, start, target):
         return -1
     else:
         return dist[start][target]
+
 
