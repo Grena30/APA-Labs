@@ -1,10 +1,7 @@
-import decimal
-from math import *
-from decimal import Decimal, getcontext
-import math
 import mpmath
 import sys
 import math
+from decimal import Decimal, getcontext
 
 sys.set_int_max_str_digits(500000)
 
@@ -33,8 +30,8 @@ def gauss_legendre_pi(iteration, precision):
     return pi
 
 
-def machin_pi():
-    mpmath.mp.dps = 50000
+def machin_pi(precision):
+    mpmath.mp.dps = precision
     pi = 4 * (4 * mpmath.atan(1 / 5) - mpmath.atan(1 / 239))
     return pi
 
@@ -63,8 +60,8 @@ def power(n):
 
 # Chudnovsky algorithm
 
-def chudnovsky_pi():
-    mpmath.mp.dps = 100000
+def chudnovsky_pi(precision):
+    getcontext().prec = precision
     m = power(100000)
     c = (640320 ** 3) // 24
     n = 1
@@ -73,9 +70,13 @@ def chudnovsky_pi():
     Bsum = 0
     while Ak != 0:
         Ak *= -(6 * n - 5) * (2 * n - 1) * (6 * n - 1)
-        Ak //= n * n * n * c
+        Ak //= (n * n * n * c)
         Asum += Ak
         Bsum += n * Ak
         n = n + 1
         result = (426880 * sqrtPI(10005 * m, m) * m) // (13591409 * Asum + 545140134 * Bsum)
+        len_c = len(str(result))
+        if len_c > precision:
+            return result
         return result
+

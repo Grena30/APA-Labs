@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     print("Tree1: ", is_unbalanced(tree1))
     print("Tree2: ", is_unbalanced(tree2))
-
+    print(times_avg)
     nums = [i for i in range(1, 6)]
     x = np.arange(1, len(nums)+1)
     plt.figure(image_num)
@@ -192,3 +192,4 @@ if __name__ == "__main__":
     plt.title('Graph search')
     plt.legend()
     plt.show()
+
