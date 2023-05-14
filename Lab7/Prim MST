@@ -1,0 +1,19 @@
+digraph {
+	0
+	0 -> 1 [label=5 dir=none]
+	0 -> 4 [label=6 dir=none]
+	1
+	1 -> 9 [label=6 dir=none]
+	1 -> 2 [label=7 dir=none]
+	2
+	2 -> 5 [label=3 dir=none]
+	3
+	4
+	5
+	5 -> 8 [label=5 dir=none]
+	6
+	6 -> 9 [label=8 dir=none]
+	7
+	8
+	9
+}
