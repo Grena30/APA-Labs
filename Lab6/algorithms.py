@@ -1,3 +1,5 @@
+import decimal
+
 import mpmath
 import sys
 import math
@@ -36,47 +38,48 @@ def machin_pi(precision):
     return pi
 
 
-def sqrtPI(n, m):
-    m1 = 10 ** 16
-    m2 = float((n * m1) // m) / m1
-    b = (int(m1 * math.sqrt(m2)) * m) // m1
-    n_m = n * m
-    while True:
-        a = b
-        b = (b + n_m // b) // 2
-        if b == a:
+def sqrt(n, one):
+    """
+ Return the square root of n as a fixed point number with the one
+ passed in.  It uses a second order Newton-Raphson convergence.  This
+ doubles the number of significant figures on each iteration.
+ """
+    # Use floating point arithmetic to make an initial guess
+    floating_point_precision = 10 ** 16
+    n_float = float((n * floating_point_precision) // one) / floating_point_precision
+    x = (int(floating_point_precision * math.sqrt(n_float)) * one) // floating_point_precision
+    n_one = n * one
+    while 1:
+        x_old = x
+        x = (x + n_one // x) // 2
+        if x == x_old:
             break
-    return b
+    return x
 
 
-def power(n):
-    if n == 0:
-        return 1
-    r = power(n // 2)
-    if n % 2 == 0:
-        return r * r
-    return r * r * 10
+def chudnovsky_pi(one):
+    """
+    Calculate pi using Chudnovsky's series
 
-
-# Chudnovsky algorithm
-
-def chudnovsky_pi(precision):
-    getcontext().prec = precision
-    m = power(100000)
-    c = (640320 ** 3) // 24
-    n = 1
-    Ak = m
-    Asum = m
-    Bsum = 0
-    while Ak != 0:
-        Ak *= -(6 * n - 5) * (2 * n - 1) * (6 * n - 1)
-        Ak //= (n * n * n * c)
-        Asum += Ak
-        Bsum += n * Ak
-        n = n + 1
-        result = (426880 * sqrtPI(10005 * m, m) * m) // (13591409 * Asum + 545140134 * Bsum)
-        len_c = len(str(result))
-        if len_c > precision:
-            return result
-        return result
-
+    This calculates it in fixed point, using the value for one passed in
+    """
+    k = 1
+    a_k = one
+    a_sum = one
+    b_sum = 0
+    C = 640320
+    C3_OVER_24 = C**3 // 24
+    while 1:
+        a_k *= -(6*k-5)*(2*k-1)*(6*k-1)
+        a_k //= k*k*k*C3_OVER_24
+        a_sum += a_k
+        b_sum += k * a_k
+        k += 1
+        if a_k == 0:
+            break
+    total = 13591409*a_sum + 545140134*b_sum
+    pi_c = (426880*sqrt(10005*one, one)*one) // total
+    len_c = len(str(pi_c)) - 1
+    pi_c = decimal.Decimal(pi_c)
+    pi_c = pi_c.scaleb(-len_c)
+    return pi_c
